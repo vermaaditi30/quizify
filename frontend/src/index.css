@@ -1,0 +1,185 @@
+/* 🌟 General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f4f4;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🎨 Home Page - More Engaging */
+.home {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+}
+
+/* 🏠 Home Content */
+.home-content {
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.home h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.home p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+/* 🚀 Start Quiz Button */
+.home button {
+  background-color: #ff4b2b;
+  color: white;
+  padding: 15px 35px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.home button:hover {
+  background: #ff416c;
+  transform: scale(1.1);
+}
+
+/* 🎯 Quiz Page */
+.quiz-container {
+  margin-top: 50px;
+}
+
+.quiz-container h2 {
+  color: #333;
+  font-size: 22px;
+}
+
+/* 📝 Question Options */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.option-btn {
+  background-color: #fff;
+  color: #333;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 18px;
+  border: 2px solid #007bff;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.option-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.correct {
+  background-color: #28a745 !important;
+  color: white !important;
+  border-color: #218838;
+  animation: correctFlash 0.5s ease-in-out;
+}
+
+.wrong {
+  background-color: #dc3545 !important;
+  color: white !important;
+  border-color: #c82333;
+  animation: wrongShake 0.5s ease-in-out;
+}
+
+.answer-feedback {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.correct-text {
+  color: #28a745;
+}
+
+.wrong-text {
+  color: #dc3545;
+}
+
+/* 🏆 Result Page */
+.result-container {
+  margin-top: 50px;
+}
+
+.result-container h1 {
+  color: #007bff;
+  font-size: 2.5rem;
+}
+
+.result-container h2 {
+  margin: 20px 0;
+  font-size: 24px;
+}
+
+.result-message {
+  font-size: 22px;
+  margin: 20px;
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.result-container button {
+  background-color: #dc3545;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.result-container button:hover {
+  background-color: #c82333;
+}
+
+/* ✨ Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes correctFlash {
+  0% { background-color: #218838; }
+  50% { background-color: #28a745; }
+  100% { background-color: #218838; }
+}
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
