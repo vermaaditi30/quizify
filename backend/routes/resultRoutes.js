@@ -3,7 +3,6 @@ import Result from "../models/Result.js";
 
 const router = express.Router();
 
-// Save quiz result
 router.post("/", async (req, res) => {
   try {
     const { score, totalQuestions } = req.body;
@@ -15,7 +14,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get all results
 router.get("/", async (req, res) => {
   try {
     const results = await Result.find();

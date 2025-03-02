@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const QuizPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -13,31 +12,53 @@ const QuizPage = () => {
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/questions")
-      .then((res) => setQuestions(res.data))
-      .catch((err) => console.error("Error fetching questions:", err));
+      .then((res) => {
+        if (res.data && Array.isArray(res.data)) {
+          setQuestions(res.data);
+          console.log("✅ API is working - Questions fetched successfully!");
+        } else {
+          console.error("❌ Invalid questions format:", res.data);
+        }
+      })
+      .catch((err) => console.error("❌ Error fetching questions:", err));
   }, []);
 
   const handleAnswer = (index) => {
-    setSelectedAnswer(index);
-    const isAnswerCorrect = index === questions[currentQuestion].answer;
-    setIsCorrect(isAnswerCorrect);
-
-    if (isAnswerCorrect) {
-      setScore(score + 1);
+    if (!questions[currentQuestion] || !questions[currentQuestion].answer) {
+      console.error("❌ Question or answer is undefined");
+      return;
     }
 
-    setTimeout(() => {
-      const nextQuestion = currentQuestion + 1;
-      if (nextQuestion < questions.length) {
-        setCurrentQuestion(nextQuestion);
-        setSelectedAnswer(null);
-        setIsCorrect(null);
-      } else {
-        axios.post("http://localhost:5000/api/results", { score: score + (isAnswerCorrect ? 1 : 0), totalQuestions: questions.length })
-          .then(() => navigate("/result"))
-          .catch((err) => console.error("Error saving result:", err));
+    const selectedOption = questions[currentQuestion].options[index];
+    const correctAnswer = questions[currentQuestion].answer;
+
+    if (selectedOption && correctAnswer) {
+      const isAnswerCorrect = selectedOption.trim().toLowerCase() === correctAnswer.trim().toLowerCase();
+      setIsCorrect(isAnswerCorrect);
+      setSelectedAnswer(index);
+
+      if (isAnswerCorrect) {
+        setScore((prevScore) => prevScore + 1);
       }
-    }, 1000);
+
+      setTimeout(() => {
+        const nextQuestion = currentQuestion + 1;
+        if (nextQuestion < questions.length) {
+          setCurrentQuestion(nextQuestion);
+          setSelectedAnswer(null);
+          setIsCorrect(null);
+        } else {
+          axios.post("http://localhost:5000/api/results", {
+            score: score + (isAnswerCorrect ? 1 : 0),
+            totalQuestions: questions.length,
+          })
+          .then(() => navigate("/result"))
+          .catch((err) => console.error("❌ Error saving result:", err));
+        }
+      }, 1000);
+    } else {
+      console.error("❌ Invalid answer or selected option");
+    }
   };
 
   return (
@@ -49,7 +70,10 @@ const QuizPage = () => {
             {questions[currentQuestion].options.map((option, index) => (
               <button
                 key={index}
-                className={`option-btn ${selectedAnswer !== null ? (index === questions[currentQuestion].answer ? "correct" : selectedAnswer === index ? "wrong" : "") : ""}`}
+                className={`option-btn 
+                  ${selectedAnswer !== null 
+                    ? (option === questions[currentQuestion].answer ? "correct" : selectedAnswer === index ? "wrong" : "") 
+                    : ""}`}
                 onClick={() => handleAnswer(index)}
                 disabled={selectedAnswer !== null}
               >
